@@ -39,3 +39,15 @@ También se debe implementar un manejo adecuado de excepciones, tales como:
 - Cadenas de texto vacías o nulas.
 - Claves inválidas.
 - Caracteres no soportados.
+
+## Actividades
+
+### 1. Implementación de Funciones
+
+Crear una función de orden superior llamada `procesar_mensaje` (o similar) con los siguientes parámetros:
+
+- Mensaje (`String`).
+- Clave (`Int`).
+- Función de cifrado (`(Char, Int) => Char`).
+
+La función debe aplicar la transformación a cada carácter del mensaje utilizando `map` e incluir bloques de manejo de excepciones (`Try/Catch` o `Try/Success/Failure`).
