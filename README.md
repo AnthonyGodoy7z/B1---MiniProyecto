@@ -51,3 +51,37 @@ Crear una función de orden superior llamada `procesar_mensaje` (o similar) con 
 - Función de cifrado (`(Char, Int) => Char`).
 
 La función debe aplicar la transformación a cada carácter del mensaje utilizando `map` e incluir bloques de manejo de excepciones (`Try/Catch` o `Try/Success/Failure`).
+```scala
+import scala.util.{Try, Success, Failure}
+def procesar_mensaje(mensaje: String, clave: Int, cifrado: (Char, Int) => Char): Try[String] = {
+  if (mensaje == null || mensaje.isEmpty) {
+    Failure(new IllegalArgumentException(
+      "El mesaje es nulo o esta vacio"))
+  } else{
+    Success(mensaje.map(c => cifrado (c, clave)))
+  }
+}
+```
+
+### 2. Pruebas de Cifrado y Descifrado
+
+Utilizar las funciones para resolver los siguientes casos:
+
+#### 1. Caso César
+
+- Cifrar la palabra `"FUNCIONAL"` con clave `k = 3`.
+- Descifrar el resultado obtenido (usando clave `-3` o lógica inversa) para recuperar el mensaje original.
+
+#### 2. Caso XOR
+
+- Cifrar la palabra `"scala"` con clave `k = 5`.
+- Utilizar el operador `^` dentro de la función lambda para transformar el carácter.
+- Volver a aplicar la función con el resultado y la misma clave `k = 5` para demostrar que se recupera `"scala"`.
+
+### 3. Manejo de Errores
+
+Implementar pruebas donde se fuerce el fallo para demostrar la robustez del código (ej. pasar una clave excesivamente grande o caracteres especiales no manejados) y capturar el error elegantemente.
+
+## Ejemplos de Ejercicio
+
+A continuación se detalla el paso a paso lógico que el código debe realizar internamente.
