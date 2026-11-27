@@ -1,6 +1,6 @@
 # Mini Proyecto: Higher Order Functions en Criptografía
 
-**Programación Funcional y Reactiva** · Scala Worksheet · _Tu nombre aquí_
+**Programación Funcional y Reactiva**
 
 ---
 
