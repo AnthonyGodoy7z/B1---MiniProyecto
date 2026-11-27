@@ -134,16 +134,16 @@ Se manejan tres tipos de error: mensajes **vacíos o nulos**, **claves inválida
 ```scala
 // 3. Manejo de errores
 def mostrar(r: Try[String]): String = r match {
-  case Success(t) => s"OK: $t"
+  case Success(t) => s"correcto: $t"
   case Failure(e) => s"Error capturado: ${e.getMessage}"
 }
 
 mostrar(procesar_mensaje("", 3, cifrado_cesar))             // Error capturado: El mensaje es nulo o esta vacio
 mostrar(procesar_mensaje(null, 3, cifrado_cesar))           // Error capturado: El mensaje es nulo o esta vacio
 mostrar(procesar_mensaje("HOLA", 999999, cifrado_cesar))    // Error capturado: Clave invalida: 999999
-mostrar(procesar_mensaje("Hola Mundo", 3, cifrado_cesar))   // Error capturado: Caracter no soportado: ' '
+mostrar(procesar_mensaje("Hola a todos", 3, cifrado_cesar))   // Error capturado: Caracter no soportado: ' '
 mostrar(procesar_mensaje("hola", 200, cifrado_xor))         // Error capturado: Clave XOR invalida: 200
-mostrar(procesar_mensaje("Ñandú", 5, cifrado_xor))          // Error capturado: Caracter no ASCII: 'Ñ'
+mostrar(procesar_mensaje("Ñaño", 5, cifrado_xor))          // Error capturado: Caracter no ASCII: 'Ñ'
 ```
 
 ---
