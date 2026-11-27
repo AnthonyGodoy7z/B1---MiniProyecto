@@ -90,13 +90,13 @@ def cifrado_xor(c: Char, k: Int): Char = {
 ### Caso César: `"FUNCIONAL"` con `k = 3`
 
 ```scala
-// 2.1 Caso Cesar
+//2.1 Caso Cesar
 val cesar_cifrado = procesar_mensaje("FUNCIONAL", 3, cifrado_cesar)
-// Success(IXQFLRQDO)
+//resultado: Success(IXQFLRQDO)
 
 // Descifrar con clave -3 (logica inversa)
 val cesar_descifrado = cesar_cifrado.flatMap(t => procesar_mensaje(t, -3, cifrado_cesar))
-// Success(FUNCIONAL)
+//Resultado: Success(FUNCIONAL)
 ```
 
 | F | U | N | C | I | O | N | A | L |
@@ -110,11 +110,11 @@ Paso detallado para `'s'`: `115 ^ 5` → `0111 0011 ⊕ 0000 0101 = 0111 0110` =
 ```scala
 // 2.2 Caso XOR (operador ^ dentro de la lambda)
 val xor_cifrado = procesar_mensaje("scala", 5, (c, k) => (c ^ k).toChar)
-// Success(vfdid)
+// resultado: Success(vfdid)
 
 // Misma funcion y misma clave para recuperar el original
 val xor_descifrado = xor_cifrado.flatMap(t => procesar_mensaje(t, 5, (c, k) => (c ^ k).toChar))
-// Success(scala)
+// resultado: Success(scala)
 ```
 
 | Carácter | ASCII | XOR 5 | Res. ASCII | Cifrado |
