@@ -145,6 +145,7 @@ mostrar(procesar_mensaje("Hola a todos", 3, cifrado_cesar))   // Error capturado
 mostrar(procesar_mensaje("hola", 200, cifrado_xor))         // Error capturado: Clave XOR invalida: 200
 mostrar(procesar_mensaje("Ñaño", 5, cifrado_xor))          // Error capturado: Caracter no ASCII: 'Ñ'
 ```
+<img width="935" height="212" alt="image" src="https://github.com/user-attachments/assets/298bbaa5-191b-4503-a7c0-3dcd55e92b86" />
 
 ---
 
