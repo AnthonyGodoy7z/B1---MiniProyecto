@@ -24,14 +24,15 @@ Para el manejo de errores se usa **`Try`**, que representa una operación que pu
 ```scala
 // 1. Implementacion de funciones
 import scala.util.{Try, Success, Failure}
-
 def procesar_mensaje(mensaje: String, clave: Int, cifrado: (Char, Int) => Char): Try[String] = {
   if (mensaje == null || mensaje.isEmpty) {
-    Failure(new IllegalArgumentException("El mensaje es nulo o esta vacio"))
-  } else if (clave < -1000 || clave > 1000) {
-    Failure(new IllegalArgumentException(s"Clave invalida: $clave"))
-  } else {
-    Try(mensaje.map(c => cifrado(c, clave)))
+    Failure(new IllegalArgumentException(
+      "El mesaje es nulo o esta vacio"))
+  }  else if (clave < -1000 || clave > 1000) {
+    Failure(new IllegalArgumentException(
+      s"Clave invalida: $clave (rango permitido: -1000 a 1000)"))
+  } else{
+    Success(mensaje.map(c => cifrado (c, clave)))
   }
 }
 ```
@@ -72,10 +73,12 @@ E(x, k) = ASCII(x) ⊕ k
 Como `(a ⊕ k) ⊕ k = a`, aplicar la misma operación dos veces con la misma clave devuelve el original.
 
 ```scala
-// Cifrado XOR
+//Cifrado XOR
 def cifrado_xor(c: Char, k: Int): Char = {
-  if (k < 0 || k > 127) throw new IllegalArgumentException(s"Clave XOR invalida: $k")
-  if (c > 127) throw new IllegalArgumentException(s"Caracter no ASCII: '$c'")
+  if (k < 0 || k > 127)
+    throw new IllegalArgumentException(s"Clave XOR invalida: $k (debe estar entre 0 y 127)")
+  if (c > 127)
+    throw new IllegalArgumentException(s"Caracter no ASCII: '$c'")
   (c ^ k).toChar
 }
 ```
