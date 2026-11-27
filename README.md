@@ -152,10 +152,13 @@ mostrar(procesar_mensaje("Ñaño", 5, cifrado_xor))          // Error capturado:
 ## Preguntas para reflexionar
 
 **¿Por qué XOR es su propia inversa con el mismo `^`, mientras que el César requiere invertir el signo de la clave?**
-Porque `(a ⊕ k) ⊕ k = a ⊕ 0 = a`: todo bit XOR consigo mismo da 0. En el César se suma, y `(x + k) + k = x + 2k`, que no regresa a `x`; hay que sumar `-k`.
+
+Porque XOR permite recuperar el mensaje original aplicando nuevamente la misma operación con la misma clave y por otra parte en Cesar desplaza las letras en una dirección y necesita desplazarlas en la dirección contraria para recuperar el mensaje original.
 
 **¿Qué ventajas ofrece `map` sobre un bucle `for` tradicional?**
-Es declarativo, no usa variables mutables ni acumuladores, devuelve una colección nueva inmutable y el código es más corto y fácil de componer.
+
+map permite recorrer y transformar cada caracter de un mensaje de manera sencilla sin modificar el mensaje original y facilita la programación funcional y permite escribir código más corto y claro.
 
 **¿Cómo ayuda el tipado estático al pasar funciones como argumentos?**
-El compilador verifica que la función tenga la firma `(Char, Int) => Char`; si no coincide, el error aparece al compilar y no al ejecutar.
+
+El tipado estático comprueba que los datos y las funciones tengan los tipos correctos como podria ser el permitir verificar que la función de cifrado reciba un Char y un Int, y devuelva un Char, evitando errores al utilizarla.
