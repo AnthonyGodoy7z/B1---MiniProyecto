@@ -36,8 +36,22 @@ def procesar_mensaje(mensaje: String, clave: Int, cifrado: (Char, Int) => Char):
   }
 }
 ```
+El motor funciona en tres pasos:
+
+1. **Valida el mensaje:** si es nulo o vacío, devuelve `Failure`.
+2. **Valida la clave:** si está fuera del rango permitido, devuelve `Failure`.
+3. **Cifra:** aplica con `map` la función `cifrado` a cada carácter. Está dentro de `Try`, así que si la función lanza una excepción (por ejemplo, un carácter no soportado), se captura como `Failure`.
 
 ### Cifrado César
+
+#### ¿Cómo funciona?
+
+El César es un cifrado por **sustitución**: cada letra se reemplaza por otra que está `k` posiciones más adelante en el alfabeto. La clave `k` indica cuántos lugares se desplaza.
+
+1. Cada letra se convierte en su posición en el alfabeto (`A = 0`, `B = 1`, ..., `Z = 25`).
+2. Se suma la clave `k`.
+3. Se aplica `mod 26` para que, si se pasa de la `Z`, **dé la vuelta** al inicio del alfabeto.
+4. La nueva posición se convierte otra vez en letra.
 
 Desplaza cada letra `k` posiciones en el alfabeto:
 
@@ -59,11 +73,32 @@ def cifrado_cesar(c: Char, k: Int): Char = {
   else throw new IllegalArgumentException(s"Caracter no soportado: '$c'")
 }
 ```
+- `c - base` obtiene la posición de la letra en el alfabeto (restando el código de `'A'` o de `'a'`).
+- `base + ...` convierte la nueva posición otra vez en letra.
+- Se usa `'A'` como base para mayúsculas y `'a'` para minúsculas, así se conserva el formato original.
+- Cualquier otro carácter lanza una excepción.
 
 Ejemplo con `"AD"` y `k = 1`: `A (0) → (0+1) mod 26 = 1 → B` y `D (3) → (3+1) mod 26 = 4 → E`, resultado `"BE"`.
 
 ### Cifrado XOR
 
+#### ¿Cómo funciona?
+
+El XOR (*Exclusive OR*, "o exclusivo") trabaja con los **bits** del código ASCII de cada carácter. Compara dos bits y devuelve `1` si son **distintos** y `0` si son **iguales**:
+
+| Bit A | Bit B | A ⊕ B |
+|:-----:|:-----:|:-----:|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+Para cifrar un carácter:
+
+1. Se obtiene su código ASCII (por ejemplo `'s' = 115`).
+2. Se pasa a binario junto con la clave (`115 = 0111 0011` y `5 = 0000 0101`).
+3. Se aplica XOR bit a bit (`0111 0011 ⊕ 0000 0101 = 0111 0110`).
+4. El resultado se convierte otra vez en carácter (`0111 0110 = 118 = 'v'`).
 Aplica la operación *Exclusive OR* a nivel de bits entre el código ASCII del carácter y la clave, con el operador `^`:
 
 ```
@@ -82,6 +117,8 @@ def cifrado_xor(c: Char, k: Int): Char = {
   (c ^ k).toChar
 }
 ```
+- Primero valida que la clave esté entre `0` y `127` y que el carácter sea ASCII.
+- `c ^ k` aplica el XOR bit a bit con el operador `^` y `.toChar` convierte el resultado en carácter.
 
 ---
 
@@ -98,6 +135,7 @@ val cesar_cifrado = procesar_mensaje("FUNCIONAL", 3, cifrado_cesar)
 val cesar_descifrado = cesar_cifrado.flatMap(t => procesar_mensaje(t, -3, cifrado_cesar))
 //Resultado: Success(FUNCIONAL)
 ```
+Cada letra avanza 3 posiciones al cifrar. Para descifrar se usa `flatMap`, que toma el texto cifrado (solo si fue `Success`) y le aplica el desplazamiento contrario con `-3`.
 
 | F | U | N | C | I | O | N | A | L |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -116,6 +154,7 @@ val xor_cifrado = procesar_mensaje("scala", 5, (c, k) => (c ^ k).toChar)
 val xor_descifrado = xor_cifrado.flatMap(t => procesar_mensaje(t, 5, (c, k) => (c ^ k).toChar))
 // resultado: Success(scala)
 ```
+La función se pasa directamente como **lambda** con el operador `^` dentro. Al aplicarla de nuevo con la misma clave `k = 5`, se recupera `scala`.
 
 | Carácter | ASCII | XOR 5 | Res. ASCII | Cifrado |
 |:--------:|:-----:|:-----:|:----------:|:-------:|
